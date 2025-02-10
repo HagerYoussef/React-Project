@@ -25,22 +25,10 @@ export default function Home() {
     autoplay: true,
     autoplaySpeed: 2000,
     responsive: [
-      {
-        breakpoint: 1200,
-        settings: { slidesToShow: 4, slidesToScroll: 1 },
-      },
-      {
-        breakpoint: 992,
-        settings: { slidesToShow: 3, slidesToScroll: 1 },
-      },
-      {
-        breakpoint: 768,
-        settings: { slidesToShow: 2, slidesToScroll: 1 },
-      },
-      {
-        breakpoint: 576,
-        settings: { slidesToShow: 1, slidesToScroll: 1 },
-      },
+      { breakpoint: 1200, settings: { slidesToShow: 4, slidesToScroll: 1 } },
+      { breakpoint: 992, settings: { slidesToShow: 3, slidesToScroll: 1 } },
+      { breakpoint: 768, settings: { slidesToShow: 2, slidesToScroll: 1 } },
+      { breakpoint: 576, settings: { slidesToShow: 1, slidesToScroll: 1 } },
     ],
   };
 
@@ -48,7 +36,6 @@ export default function Home() {
     <div>
       <HomeSlider />
 
-      
       <div className="my-5 container">
         <h2 className="text-center mb-4 text-main">Categories</h2>
         <Slider {...settings}>
@@ -61,6 +48,7 @@ export default function Home() {
         </Slider>
       </div>
 
+      {/* ✅ Ensure Products fetches both API and admin-added products */}
       <Products />
     </div>
   );
