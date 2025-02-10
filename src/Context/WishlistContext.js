@@ -8,9 +8,7 @@ export function WishlistContextProvider(props){
 function getHeader(){
   return {token:localStorage.getItem('userToken')}
 }
-function addToWishlist(id){
-     
-    
+function addToWishlist(id){    
     return axios.post(`https://ecommerce.routemisr.com/api/v1/wishlist`,
     
     {

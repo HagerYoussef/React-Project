@@ -12,27 +12,45 @@ export default function Products() {
   let [searchTerm, setSearchTerm] = useState("");
   let [selectedCategory, setSelectedCategory] = useState("");
   let [selectedPrice, setSelectedPrice] = useState("");
+
   let { addCart, setCartNumber, getCart } = useContext(cartContext);
   let { addToWishlist, getMyWishlist, deleteWishlist } = useContext(wishlistContext);
-  let [wishListProduct, setWishListProduct] = useState([]);
+  let [wishListProduct, setWishListProduct] = useState(new Set()); // Using Set for instant updates
 
   async function getCategory() {
     let { data } = await axios.get('https://ecommerce.routemisr.com/api/v1/categories');
     setCategory(data.data);
   }
 
+  // ✅ Corrected `getProduct` function
   async function getProduct() {
-    let { data } = await axios.get('https://ecommerce.routemisr.com/api/v1/products');
-    setProduct(data.data);
+    try {
+      let { data } = await axios.get('https://ecommerce.routemisr.com/api/v1/products');
+      let apiProducts = data.data;
+
+      // 🔹 Retrieve admin-added products from localStorage
+      let localProducts = JSON.parse(localStorage.getItem("products")) || [];
+
+      // 🔹 Merge API products with local products
+      setProduct([...localProducts, ...apiProducts]);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  }
+
+  async function fetchWishlist() {
+    try {
+      let { data } = await getMyWishlist();
+      setWishListProduct(new Set(data?.data.map(item => item._id)));
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+    }
   }
 
   useEffect(() => {
     getCategory();
-    getProduct();
-    (async () => {
-      let { data } = await getMyWishlist();
-      setWishListProduct(data?.data);
-    })();
+    getProduct();  // ✅ Fetching both API & admin-added products
+    fetchWishlist();
   }, []);
 
   async function addToMyCart(id) {
@@ -46,19 +64,37 @@ export default function Products() {
     }
   }
 
-  function isInWishlist(id) {
-    return wishListProduct.some(product => product._id === id);
+  async function handleAddToWishlist(id) {
+    try {
+      await addToWishlist(id);
+      setWishListProduct(prev => new Set(prev).add(id)); // ✅ Optimized
+    } catch (error) {
+      console.error("Error adding to wishlist:", error);
+    }
   }
+  
+  async function handleDeleteFromWishlist(id) {
+    try {
+      await deleteWishlist(id);
+      setWishListProduct(prev => {
+        let updated = new Set(prev);
+        updated.delete(id);
+        return updated; // ✅ Fix: Ensures the state updates properly
+      });
+    } catch (error) {
+      console.error("Error removing from wishlist:", error);
+    }
+  }  
 
   let filteredProducts = productList.filter(product => {
     let matchesCategory = selectedCategory ? product.category._id.toString() === selectedCategory.toString() : true;
     let matchesSearch = product.title.toLowerCase().includes(searchTerm);
     let matchesPrice = true;
-  
+
     if (selectedPrice === "low") matchesPrice = product.price < 500;
     else if (selectedPrice === "medium") matchesPrice = product.price >= 500 && product.price <= 2000;
     else if (selectedPrice === "high") matchesPrice = product.price > 2000;
-  
+
     return matchesCategory && matchesSearch && matchesPrice;
   });
 
@@ -129,15 +165,16 @@ export default function Products() {
         currentProducts.map(product => (
           <div className="col-md-3" key={product._id}>
             <div className="product p-3 position-relative">
-              {isInWishlist(product._id) ? (
-                <button onClick={() => { deleteWishlist(product._id) }} className={'btn border-danger'}>
-                  <i className='fa-solid fa-heart text-danger'></i>
-                </button>
-              ) : (
-                <button onClick={() => { addToWishlist(product._id) }} className={'btn border border-black'}>
-                  <i className='fa-solid fa-heart text-black'></i>
-                </button>
-              )}
+            <button 
+              onClick={() => { 
+                handleAddToWishlist(product._id) 
+                  ? handleDeleteFromWishlist(product._id) 
+                  : handleAddToWishlist(product._id); 
+              }} 
+              className={`btn border ${handleAddToWishlist(product._id) ? 'border-danger' : 'border-black'}`}
+            >
+              <i className={`fa-solid fa-heart ${handleAddToWishlist(product._id) ? 'text-danger' : 'text-black'}`}></i>
+            </button>
               <Link to={`/details/${product._id}`} className='link11'>
                 <img src={product.imageCover} alt={product.title} className='w-100' />
                 <p className='text-main'>{product.category.name}</p>
