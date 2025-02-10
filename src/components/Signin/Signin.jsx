@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { userContext } from '../../Context/TokenContext';
 
 export default function SignIn() {
@@ -11,9 +12,13 @@ export default function SignIn() {
   let [errMsg, setMSG] = useState(null);
   let { setToken } = useContext(userContext);
 
+
+  const { lang, content } = useSelector((state) => state.languageReducer);
+  const loginContent = content[lang].login;
+
   let validationSchema = Yup.object({
-    email: Yup.string().required('Email is required').email('Enter a valid email'),
-    password: Yup.string().required('Password is required'),
+    email: Yup.string().required(loginContent.email_required).email(loginContent.invalid_email),
+    password: Yup.string().required(loginContent.password_required),
   });
 
   async function signIN(values) {
@@ -25,14 +30,13 @@ export default function SignIn() {
 
       if (data.message === 'success') {
         localStorage.setItem('userToken', data.token);
-        
-        // ✅ Check if email matches admin credentials
+
         if (values.email.trim().toLowerCase() === 'adminn15@gmail.com' && values.password === 'Admin123') {
           localStorage.setItem('userRole', 'admin');
-          navigate('/admin');  // Navigate to admin dashboard
+          navigate('/admin');
         } else {
           localStorage.setItem('userRole', 'user');
-          navigate('/home');  // Navigate to user dashboard
+          navigate('/home');
         }
 
         setToken(data.token);
@@ -58,11 +62,11 @@ export default function SignIn() {
 
   return (
     <div className='my-5'>
-      <h1 className='text-main text-center'>Login Form</h1>
+      <h1 className='text-main text-center'>{loginContent.title}</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className="row m-auto w-75 shadow gy-4 p-5">
           <div className="col-md-12">
-            <label htmlFor="uEmail">Email:</label>
+            <label htmlFor="uEmail">{loginContent.email}</label>
             <input 
               type="email" 
               onBlur={formik.handleBlur} 
@@ -78,7 +82,7 @@ export default function SignIn() {
           </div>
           
           <div className="col-md-12">
-            <label htmlFor="uPassword">Password:</label>
+            <label htmlFor="uPassword">{loginContent.password}</label>
             <input 
               type="password" 
               onBlur={formik.handleBlur} 
@@ -97,15 +101,15 @@ export default function SignIn() {
           
           <div className="col-md-12 text-end my-2">
             <button type="submit" disabled={!(formik.dirty && formik.isValid)} className='btn btn-success text-light'>
-              Login {isLoading && <i className='fa-solid text-light mx-2 fa-spinner fa-spin'></i>}
+              {loginContent.login_button} {isLoading && <i className='fa-solid text-light mx-2 fa-spinner fa-spin'></i>}
             </button>
           </div>
 
           <p className='text-muted'>
-            Don't have an account? <Link to='/signup' className='text-main fw-bold'>Register</Link>
+            {loginContent.having_account} <Link to='/signup' className='text-main fw-bold'>{loginContent.register_page}</Link>
           </p>
           <p className='text-muted'>
-            Forgot Password? <Link to='/forgetPassword' className='text-main fw-bold'>Click here</Link>
+            {loginContent.forget_password} <Link to='/forgetPassword' className='text-main fw-bold'>{loginContent.click_to_reset_password}</Link>
           </p>
         </div>
       </form>

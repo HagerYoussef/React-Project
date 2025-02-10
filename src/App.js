@@ -44,7 +44,7 @@ const routes= createBrowserRouter([
 ])
 function App() {
   return (
-      
+    // <div dir= {lang === "EN"? "ltr" : "rtl"} >
       <CartContextProvider>
       <WishlistContextProvider>
       <UserContextProvider> 
@@ -52,7 +52,8 @@ function App() {
         <ToastContainer theme='colored'/>
         </UserContextProvider>
       </WishlistContextProvider>
-      </CartContextProvider>   
+      </CartContextProvider> 
+      // </div>   
   );
 }
 
