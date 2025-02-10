@@ -8,17 +8,20 @@ import '../node_modules/bootstrap/dist/js/bootstrap.bundle.js';
 import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 import {QueryClient} from 'react-query';
 import { QueryClientProvider } from 'react-query';
+import { Provider } from 'react-redux';  // استيراد Provider
+import store from './components/Store.js';  // استيراد الـ Redux store
 import 'react-toastify/dist/ReactToastify.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
 import {ReactQueryDevtools,ReactQueryDevtoolsPanel} from 'react-query/devtools';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 let queryClient= new QueryClient();
 
 root.render(
   <QueryClientProvider client={queryClient}>
+  <Provider store={store}>
     <App />
+  </Provider>
     <ReactQueryDevtools></ReactQueryDevtools>
   </QueryClientProvider>
 );

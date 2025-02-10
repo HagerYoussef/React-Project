@@ -1,26 +1,24 @@
-const enRegister={
-    title: 'Register form',
+const enRegister = {
+    title: 'Register Form',
     name: 'Name',
-    name_required: 'name is required',
-    invalid_name: 'minlenght is 3',
-    invalid_name: 'maxlenght is 15',
+    name_required: 'Name is required',
+    name_min: 'Minimum length is 3',
+    name_max: 'Maximum length is 15',
     phone: 'Phone',
-    phone_required: 'phone is required',
-    invalid_phone: 'enter valid phone',
-    email: 'Email:',
-    email_required: 'email is required',
-    invalid_email: 'enter valid email',
-    password: 'Password:',
-    password_required: 'password is required',
-    invalid_password: 'enter valid password',
-    config_password: 'RePassword:',
-    password_required: 'confirm password',
-    invalid_password: 'not matched password',
+    phone_required: 'Phone is required',
+    invalid_phone: 'Enter a valid phone number',
+    email: 'Email',
+    email_required: 'Email is required',
+    invalid_email: 'Enter a valid email',
+    password: 'Password',
+    password_required: 'Password is required',
+    invalid_password: 'Enter a valid password',
+    confirm_password: 'Confirm Password',
+    confirm_password_required: 'Confirm Password is required',
+    not_matched: 'Passwords do not match',
     register_button: 'Register',
-    having_account: "i have account ",
+    have_account: "I have an account ",
     login_page: 'Login',
+};
 
-}
-
-
-export default enRegister
+export default enRegister;
