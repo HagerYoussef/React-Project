@@ -18,7 +18,7 @@ export default function HomeSlider() {
   return (
     <div className='row d-flex justify-content-center g-0'>
       <div className="col-md-8">
-        
+    
         <Slider {...settings}> 
       <img src={imgSlider3} className='w-100' height={500}/>
       <img src={imgSlider4} className='w-100' height={500}/>
