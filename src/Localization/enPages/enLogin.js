@@ -11,10 +11,7 @@ const enLogin={
     register_page: 'Register',
     forget_password: 'Forget Password?',
     click_to_reset_password: 'Click here',
-    cart_navbar: 'FreshCart',
-    register_navbar: 'Register',
-    login_navbar: 'Login'
-
+    
 }
 
 

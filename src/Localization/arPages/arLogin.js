@@ -11,10 +11,7 @@ const arLogin={
     register_page: 'إنشاء حساب',
     forget_password: 'هل نسيت كلمة السر؟',
     click_to_reset_password: 'اضغط هنا ',
-    cart_navbar: 'FreshCart',
-    register_navbar: 'إنشاء حساب',
-    login_navbar: 'تسجيل الدخول'
-
+    
 }
 
 

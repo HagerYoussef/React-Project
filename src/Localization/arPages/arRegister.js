@@ -1,5 +1,5 @@
 const arRegister={
-    title: 'نوذج إنشاء حساب',
+    title: 'نموذج إنشاء حساب',
     name: 'الاسم',
     name_required: 'الاسم مطلوب',
     invalid_name: 'أقل قيمة 3',
@@ -19,10 +19,6 @@ const arRegister={
     register_button: 'إنشاء حساب',
     having_account: "أمتلك حساب ",
     login_page: 'تسجيل الدخول',
-    cart_navbar: 'عربة التسوق',
-    register_navbar: 'إنشاء حساب',
-    login_navbar: 'تسجيل الدخول'
-
 }
 
 
