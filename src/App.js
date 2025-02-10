@@ -3,7 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import Home from './components/Home/Home';
 import Products from './components/Products/Products';
-import Brands from './components/Brands/Brands';
+ 
 import Cart from './components/Cart/Cart';
 import Category from './components/Category/Category';
 import Signup from './components/Signup/Signup';
@@ -27,7 +27,7 @@ const routes= createBrowserRouter([
     {path:'',element:<ProtectedRoute><Home/></ProtectedRoute> },
     {path:'home',element:<ProtectedRoute><Home/></ProtectedRoute>},
     {path:'product',element:<ProtectedRoute><Products/></ProtectedRoute>},
-    {path:'brand',element:<ProtectedRoute><Brands/></ProtectedRoute>},
+     
     {path:'cart',element:<ProtectedRoute><Cart/></ProtectedRoute>},
     {path:'details/:id',element:<ProtectedRoute><Details/></ProtectedRoute>},
     {path:'category',element:<ProtectedRoute><Category/></ProtectedRoute>},

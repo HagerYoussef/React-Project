@@ -1,13 +1,57 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.text-main{
+  color: green;
+}
+.bg-main{
+  background-color: rgb(10, 161, 10);
+}
+.product:hover{
+  border: 1px solid green;
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+  /* box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .075); */
+  border-radius: 20px;
+
+} 
+.product{
+  transition: 1s;
+  /* border: 1px solid gray; */
+}
+.slick-slide {
+  padding: 10px;
+}
+.category-item {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.category-item:hover {
+  transform: scale(1.05);
+}
+
+.product .btn{
+  opacity: 0 !important;
+  transition: transform 1s,opacity 1s !important;
+  transform: translateY(100%) !important;
+}
+.product:hover .btn{
+  opacity: 1 !important; 
+  transform: translateY(0%) !important;
+}
+.rating-color{
+  color:rgb(248, 171, 29);
+}
+.product .link11{
+  text-decoration: none;
+}
+.bg-main-light{
+  background-color: #f3f0f0;
+}
+.subCategory{
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 20px;
 }
