@@ -1,13 +1,11 @@
-const enHome = {
-    title: 'Home Page',
+const enNavbarHome = {
     cart_navbar: 'FreshCart',
     home: 'Home',
     products: 'Products',
     categories: 'Categories',
-    brands: 'Brands',
     whishlist: 'Wishlist',
     logout: 'Logout'
 }
 
 
-export default enHome
+export default enNavbarHome

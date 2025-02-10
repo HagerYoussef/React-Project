@@ -19,9 +19,6 @@ const enRegister={
     register_button: 'Register',
     having_account: "i have account ",
     login_page: 'Login',
-    cart_navbar: 'FreshCart',
-    register_navbar: 'Register',
-    login_navbar: 'Login'
 
 }
 
