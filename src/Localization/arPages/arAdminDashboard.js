@@ -1,5 +1,5 @@
 const arAdminDashboard = {
-    title: 'لوحة تحكم الأدمن - إدارة المنتجات',
+    title: 'لوحة تحكم الأدمن',
     pTitle: 'عنوان المنتج',
     pSlug: 'الرابط',
     pDecription: 'الوصف',

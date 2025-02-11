@@ -132,7 +132,7 @@ export default function Navbar() {
                       </li>
 
                       <li onClick={Logout} className="nav-item">
-                        <Link className="nav-link btn btn-success text-light" style={{ padding: '20px 30px', fontSize: '38px' }}>
+                        <Link className="nav-link btn bg-success text-light" style={{ padding: '20px 30px', fontSize: '38px' }}>
                           {loginContent.logoutButton}
                         </Link>
                       </li>

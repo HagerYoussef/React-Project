@@ -1,5 +1,5 @@
 const enAdminDashboard = {
-    title: 'Admin Dashboard - Product Management',
+    title: 'Admin Dashboard',
     pTitle: 'Product Title',
     pSlug: 'Slug',
     pDecription: 'Decription',
