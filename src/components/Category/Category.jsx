@@ -39,7 +39,7 @@ export default function Category() {
           <button
             key={page}
             onClick={() => goToPage(page)}
-            className={`btn mx-2 my-3 ${currentPage === page ? 'btn-primary' : 'btn-outline-primary'}`}
+            className={`btn mx-2 my-3 ${currentPage === page ? 'btn-success' : 'btn-outline-success'}`}
           >
             {page}
           </button>

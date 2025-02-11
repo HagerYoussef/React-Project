@@ -4,7 +4,7 @@ const arNavbarHome = {
     products: 'المنتجات',
     categories: 'الفئات',
     whishlist: 'الرغبات',
-    logout: 'تسجيل الخروج'
+    loginContent: 'تسجيل الخروج'
 }
 
 

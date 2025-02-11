@@ -2,16 +2,26 @@ import React, { useContext, useEffect, useState } from 'react';
 import { wishlistContext } from '../../Context/WishlistContext';
 import { cartContext } from '../../Context/CartContext';
 import { toast, ToastContainer } from 'react-toastify';
+import { useSelector } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Wishlist() {
-  let { getMyWishlist, deleteWishlist } = useContext(wishlistContext);
-  let [data, setWishlistData] = useState([]);
+  const { getMyWishlist, deleteWishlist } = useContext(wishlistContext);
+  const { addCart, setCartNumber } = useContext(cartContext);
+  const [data, setWishlistData] = useState([]);
+
+ 
+  const { lang, content } = useSelector((state) => state.languageReducer);
+  const wishlistContent = lang === 'En' ? content.En.wishlist : content.Ar.wishlist;
 
   useEffect(() => {
     (async () => {
-      let { data } = await getMyWishlist();
-      setWishlistData(data.data);
+      try {
+        let { data } = await getMyWishlist();
+        setWishlistData(data.data);
+      } catch (error) {
+        setWishlistData([]);
+      }
     })();
   }, []);
 
@@ -25,20 +35,14 @@ export default function Wishlist() {
   }
 
   async function removeMyWish(id) {
-    let { data } = await deleteWishlist(id);
+    await deleteWishlist(id);
     getWish();
-    console.log(data.data);
   }
-
-  let { addCart, setCartNumber } = useContext(cartContext);
 
   async function addToMyCart(id) {
     let { data } = await addCart(id);
-    console.log(data);
-    console.log("Add to Cart Response:", data);
     if (data.status === 'success') {
-      console.log("Success Message:", data.message);
-      toast.success(data.message); 
+      toast.success(data.message);
       setCartNumber(data.numOfCartItems);
       removeMyWish(id);
     }
@@ -46,35 +50,33 @@ export default function Wishlist() {
 
   return (
     <div className='container'>
-      <h3>My Wishlist</h3>
+      <h3>{wishlistContent.title}</h3>
       <div className="row">
         <div className="col-md-11 p-5 shadow bg-main-light my-5">
-          {data.map((ele) => {
-            return (
-              <div className="row py-5 border-bottom" key={ele._id}>
-                <div className="col-md-2">
-                  <img src={ele.imageCover} className='w-100' alt="cover" />
+          {data.map((ele) => (
+            <div className="row py-5 border-bottom" key={ele._id}>
+              <div className="col-md-2">
+                <img src={ele.imageCover} className='w-100' alt="cover" />
+              </div>
+              <div className="col-md-10 d-flex justify-content-between align-items-center">
+                <div>
+                  <h3>{ele.title}</h3>
+                  <p>{ele.price} EGP</p>
+                  <button onClick={() => removeMyWish(ele._id)} className='btn btn-outline-danger'>
+                    <i className='fa-regular fa-trash-can mx-2'></i>{wishlistContent.removeButton}
+                  </button>
                 </div>
-                <div className="col-md-10 d-flex justify-content-between align-items-center">
-                  <div>
-                    <h3>{ele.title}</h3>
-                    <p>{ele.price} EGP</p>
-                    <button onClick={() => { removeMyWish(ele._id) }} className='btn btn-outline-danger'>
-                      <i className='fa-regular fa-trash-can mx-2'></i>Remove
-                    </button>
-                  </div>
-                  <div>
-                    <button onClick={() => { addToMyCart(ele._id) }} className='btn btn-success text-light'>
-                      Add To Cart
-                    </button>
-                  </div>
+                <div>
+                  <button onClick={() => addToMyCart(ele._id)} className='btn btn-success text-light'>
+                    {wishlistContent.addToCartButton}
+                  </button>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
-      <ToastContainer />  
+      <ToastContainer />
     </div>
   );
 }

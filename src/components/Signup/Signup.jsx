@@ -3,16 +3,16 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux'; // ✅ استيراد useSelector
+import { useSelector } from 'react-redux'
 
 export default function Signup() {
   let navigate = useNavigate();
   let [isLoading, setLoading] = useState(false);
   let [errMsg, setMSG] = useState(null);
 
-  // ✅ جلب اللغة والمحتوى المناسب من Redux
+
   const { lang, content } = useSelector((state) => state.languageReducer);
-  const registerContent = content[lang].register; // استدعاء البيانات حسب اللغة المختارة
+  const registerContent = content[lang].register;
 
   let validationSchema = Yup.object({
     name: Yup.string().min(3, registerContent.name_min).max(15, registerContent.name_max).required(registerContent.name_required),

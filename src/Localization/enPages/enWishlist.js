@@ -1,5 +1,7 @@
 const enWishlist = {
-    title: 'My Wishlist'
+    title: 'My Wishlist',
+    removeButton: "Remove",
+    addToCartButton: "Add To Cart",
 }
 
 
