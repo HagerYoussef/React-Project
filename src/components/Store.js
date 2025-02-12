@@ -30,7 +30,7 @@ const initialState = {
       register: enRegister,
       wishlist: enWishlist,
       navbarLogin: enNavbarLogin,
-      navbarHome: enNavbarHome
+      navbarHome: enNavbarHome,
     },
     Ar: {
       adminDashboard: arAdminDashboard,
@@ -40,7 +40,7 @@ const initialState = {
       register: arRegister,
       wishlist: arWishlist,
       navbarLogin: arNavbarLogin,
-      navbarHome: arNavbarHome
+      navbarHome: arNavbarHome,
     }
   }
 };

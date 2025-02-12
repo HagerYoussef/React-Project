@@ -48,7 +48,6 @@ export default function Home() {
         </Slider>
       </div>
 
-      {/* ✅ Ensure Products fetches both API and admin-added products */}
       <Products />
     </div>
   );

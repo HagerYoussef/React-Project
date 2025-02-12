@@ -23,6 +23,7 @@ import Wishlist from './components/Wishlist/Wishlist';
 import SubCategories from './components/SubCategories/SubCategories';
 import AdminDashboard from './components/AdminPanel/admin_dashboard';
 import AuthRequired from './components/AuthRequired/AuthRequired';
+import { useSelector } from "react-redux";
 
 const routes = createBrowserRouter([
   {
@@ -43,7 +44,6 @@ const routes = createBrowserRouter([
       { path: 'admin', element: <AdminDashboard /> },
       { path: 'auth-required', element: <AuthRequired /> },
 
-      // الصفحات التي تتطلب تسجيل دخول
       { path: 'cart', element: <ProtectedRoute><Cart /></ProtectedRoute> },
       { path: 'checkout', element: <ProtectedRoute><Checkout /></ProtectedRoute> },
       { path: 'allorders', element: <ProtectedRoute><Allorders /></ProtectedRoute> },
@@ -54,7 +54,12 @@ const routes = createBrowserRouter([
 ]);
 
 function App() {
+  const lang = useSelector((state) => state.languageReducer.lang);
   return (
+    <div
+      style={{
+        direction: lang === "En" ? "ltr" : "rtl",
+      }}>
     <CartContextProvider>
       <WishlistContextProvider>
         <UserContextProvider>
@@ -63,6 +68,7 @@ function App() {
         </UserContextProvider>
       </WishlistContextProvider>
     </CartContextProvider>
+    </div>
   );
 }
 

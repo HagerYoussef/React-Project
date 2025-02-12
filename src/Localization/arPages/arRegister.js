@@ -11,6 +11,7 @@ const arRegister = {
     email_required: 'الإيميل مطلوب',
     invalid_email: 'ادخل الإيميل الصحيح',
     password: 'كلمة المرور',
+    repass: 'اعد كتابة كلمة المرور',
     password_required: 'كلمة المرور مطلوبة',
     invalid_password: 'أدخل كلمة المرور الصحيحة',
     confirm_password: 'تأكيد كلمة المرور',
