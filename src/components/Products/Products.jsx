@@ -6,6 +6,7 @@ import { cartContext } from '../../Context/CartContext';
 import { toast } from 'react-toastify';
 import { wishlistContext } from '../../Context/WishlistContext';
 import { userContext } from '../../Context/TokenContext';
+import { useSelector } from 'react-redux';
 
 export default function Products() {
   let [categoryList, setCategory] = useState([]);
@@ -18,6 +19,9 @@ export default function Products() {
   let { userToken } = useContext(userContext);
   let navigate = useNavigate();
   let [wishListProduct, setWishListProduct] = useState([]);
+
+  const { lang, content } = useSelector((state) => state.languageReducer); // Reading language from the Redux store
+  const productContent = lang === 'En' ? content.En.products : content.Ar.products;
 
   async function getCategory() {
     let { data } = await axios.get('https://ecommerce.routemisr.com/api/v1/categories');
@@ -40,7 +44,6 @@ export default function Products() {
 
   async function addToMyCart(id) {
     if (!userToken) {
-      
       navigate('/auth-required');
       return;
     }
@@ -53,16 +56,18 @@ export default function Products() {
       }
     }
   }
+
   async function addToMyWishlist(id) {
-  if (!userToken) {
-    navigate('/auth-required'); 
-    return;
+    if (!userToken) {
+      navigate('/auth-required'); 
+      return;
+    }
+    await addToWishlist(id);
+    let { data } = await getMyWishlist();
+    setWishListProduct(data?.data);
+    toast.success(data.message);
   }
-  await addToWishlist(id);
-  let { data } = await getMyWishlist();
-  setWishListProduct(data?.data);
-  toast.success(data.message);
-}
+
   function isInWishlist(id) {
     return wishListProduct.some(product => product._id === id);
   }
@@ -119,7 +124,7 @@ export default function Products() {
       <div className="col-md-4">
         <input
           type="text"
-          placeholder='Search by product name'
+          placeholder={productContent.search}
           className='form-control mt-2'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
@@ -127,7 +132,7 @@ export default function Products() {
       </div>
       <div className="col-md-4">
         <select className='form-control mt-2' value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-          <option value="">All Categories</option>
+          <option value="">{productContent.category}</option>
           {categoryList.map(category => (
             <option key={category._id} value={category._id}>{category.name}</option>
           ))}
@@ -135,10 +140,10 @@ export default function Products() {
       </div>
       <div className="col-md-4">
         <select className='form-control mt-2' value={selectedPrice} onChange={(e) => setSelectedPrice(e.target.value)}>
-          <option value="">All Prices</option>
-          <option value="low">Less than 500 EGP</option>
-          <option value="medium">500 - 2000 EGP</option>
-          <option value="high">More than 2000 EGP</option>
+          <option value="">{productContent.price}</option>
+          <option value="low">{productContent.low}</option>
+          <option value="medium">{productContent.medium}</option>
+          <option value="high">{productContent.high}</option>
         </select>
       </div>
 
@@ -158,7 +163,7 @@ export default function Products() {
                   <p>{product.ratingsAverage}<i className='fa-solid fa-star rating-color'></i></p>
                 </div>
               </Link>
-              <button onClick={() => { addToMyCart(product._id) }} className='btn w-100 my-4 btn-success text-light mx-auto'>Add to cart</button>
+              <button onClick={() => { addToMyCart(product._id) }} className='btn w-100 my-4 btn-success text-light mx-auto'>{productContent.addToCart}</button>
             </div>
           </div>
         ))

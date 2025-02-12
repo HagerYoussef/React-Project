@@ -11,6 +11,7 @@ const enRegister = {
     email_required: 'Email is required',
     invalid_email: 'Enter a valid email',
     password: 'Password',
+    repass: 'Repassword',
     password_required: 'Password is required',
     invalid_password: 'Enter a valid password',
     confirm_password: 'Confirm Password',
