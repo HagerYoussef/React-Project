@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { BallTriangle } from 'react-loader-spinner';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { cartContext } from '../../Context/CartContext';
 import { toast } from 'react-toastify';
 import { wishlistContext } from '../../Context/WishlistContext';
+import { userContext } from '../../Context/TokenContext';
 
 export default function Products() {
   let [categoryList, setCategory] = useState([]);
@@ -14,6 +15,8 @@ export default function Products() {
   let [selectedPrice, setSelectedPrice] = useState("");
   let { addCart, setCartNumber, getCart } = useContext(cartContext);
   let { addToWishlist, getMyWishlist, deleteWishlist } = useContext(wishlistContext);
+  let { userToken } = useContext(userContext);
+  let navigate = useNavigate();
   let [wishListProduct, setWishListProduct] = useState([]);
 
   async function getCategory() {
@@ -36,6 +39,11 @@ export default function Products() {
   }, []);
 
   async function addToMyCart(id) {
+    if (!userToken) {
+      
+      navigate('/auth-required');
+      return;
+    }
     let { data } = await addCart(id);
     if (data.status === "success") {
       toast.success(data.message);
@@ -45,7 +53,16 @@ export default function Products() {
       }
     }
   }
-
+  async function addToMyWishlist(id) {
+  if (!userToken) {
+    navigate('/auth-required'); 
+    return;
+  }
+  await addToWishlist(id);
+  let { data } = await getMyWishlist();
+  setWishListProduct(data?.data);
+  toast.success(data.message);
+}
   function isInWishlist(id) {
     return wishListProduct.some(product => product._id === id);
   }
@@ -129,15 +146,9 @@ export default function Products() {
         currentProducts.map(product => (
           <div className="col-md-3" key={product._id}>
             <div className="product p-3 position-relative">
-              {isInWishlist(product._id) ? (
-                <button onClick={() => { deleteWishlist(product._id) }} className={'btn border-danger'}>
-                  <i className='fa-solid fa-heart text-danger'></i>
-                </button>
-              ) : (
-                <button onClick={() => { addToWishlist(product._id) }} className={'btn border border-black'}>
-                  <i className='fa-solid fa-heart text-black'></i>
-                </button>
-              )}
+              <button onClick={() => { addToMyWishlist(product._id) }} className='btn border border-black'>
+                <i className={`fa-solid fa-heart ${isInWishlist(product._id) ? 'text-danger' : 'text-black'}`}></i>
+              </button>
               <Link to={`/details/${product._id}`} className='link11'>
                 <img src={product.imageCover} alt={product.title} className='w-100' />
                 <p className='text-main'>{product.category.name}</p>

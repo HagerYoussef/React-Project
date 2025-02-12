@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -12,9 +12,16 @@ export default function SignIn() {
   let [errMsg, setMSG] = useState(null);
   let { setToken } = useContext(userContext);
 
-
   const { lang, content } = useSelector((state) => state.languageReducer);
   const loginContent = content[lang].login;
+
+  useEffect(() => {
+
+    let storedToken = localStorage.getItem('userToken');
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
   let validationSchema = Yup.object({
     email: Yup.string().required(loginContent.email_required).email(loginContent.invalid_email),
@@ -23,13 +30,14 @@ export default function SignIn() {
 
   async function signIN(values) {
     setLoading(true);
-    setMSG(null); // Reset error message
+    setMSG(null);
 
     try {
       let { data } = await axios.post('https://ecommerce.routemisr.com/api/v1/auth/signin', values);
 
       if (data.message === 'success') {
         localStorage.setItem('userToken', data.token);
+        setToken(data.token); 
 
         if (values.email.trim().toLowerCase() === 'adminn15@gmail.com' && values.password === 'Admin123') {
           localStorage.setItem('userRole', 'admin');
@@ -37,9 +45,8 @@ export default function SignIn() {
         } else {
           localStorage.setItem('userRole', 'user');
           navigate('/home');
+          console.log(localStorage.getItem('userToken'))
         }
-
-        setToken(data.token);
       } else {
         setMSG('Login failed. Please try again.');
       }

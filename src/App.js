@@ -13,7 +13,7 @@ import UserContextProvider from './Context/TokenContext';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Details from './components/Details/Details';
 import { CartContextProvider } from './Context/CartContext';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import Checkout from './components/Checkout/Checkout';
 import Allorders from './components/allorders/allorders';
 import ForgetPassword from './components/forgetPassword/forgetPassword';
@@ -22,38 +22,47 @@ import { WishlistContextProvider } from './Context/WishlistContext';
 import Wishlist from './components/Wishlist/Wishlist';
 import SubCategories from './components/SubCategories/SubCategories';
 import AdminDashboard from './components/AdminPanel/admin_dashboard';
-const routes= createBrowserRouter([
-  {path:'',element:<Layout/>,children:[
-    {path:'',element:<ProtectedRoute><Home/></ProtectedRoute> },
-    {path:'home',element:<ProtectedRoute><Home/></ProtectedRoute>},
-    {path:'product',element:<ProtectedRoute><Products/></ProtectedRoute>},
-    {path:'cart',element:<ProtectedRoute><Cart/></ProtectedRoute>},
-    {path:'details/:id',element:<ProtectedRoute><Details/></ProtectedRoute>},
-    {path:'category',element:<ProtectedRoute><Category/></ProtectedRoute>},
-    {path:'checkout',element:<ProtectedRoute><Checkout/></ProtectedRoute>},
-    {path:'allorders',element:<ProtectedRoute><Allorders/></ProtectedRoute>},
-    {path:'subCategories/:id',element:<ProtectedRoute><SubCategories/></ProtectedRoute>},
-    {path:'forgetPassword',element:<ForgetPassword/>},
-    {path:'resetPassword',element:<ResetPassword/>},
-    {path:'wishlist',element:<Wishlist/>},
-    {path:'signin',element:<Signin/>},
-    {path:'signup',element:<Signup/>},
-    {path:'admin',element:<AdminDashboard/>},
-    {path:'*',element:<Notfound/>}
-  ]}
-])
+import AuthRequired from './components/AuthRequired/AuthRequired';
+
+const routes = createBrowserRouter([
+  {
+    path: '',
+    element: <Layout />,
+    children: [
+      { path: '', element: <Home /> },
+      { path: 'home', element: <Home /> },
+      { path: 'product', element: <Products /> },
+      { path: 'details/:id', element: <Details /> },
+      { path: 'category', element: <Category /> },
+      { path: 'subCategories/:id', element: <SubCategories /> },
+      { path: 'wishlist', element: <Wishlist /> },
+      { path: 'signin', element: <Signin /> },
+      { path: 'signup', element: <Signup /> },
+      { path: 'forgetPassword', element: <ForgetPassword /> },
+      { path: 'resetPassword', element: <ResetPassword /> },
+      { path: 'admin', element: <AdminDashboard /> },
+      { path: 'auth-required', element: <AuthRequired /> },
+
+      // الصفحات التي تتطلب تسجيل دخول
+      { path: 'cart', element: <ProtectedRoute><Cart /></ProtectedRoute> },
+      { path: 'checkout', element: <ProtectedRoute><Checkout /></ProtectedRoute> },
+      { path: 'allorders', element: <ProtectedRoute><Allorders /></ProtectedRoute> },
+
+      { path: '*', element: <Notfound /> }
+    ]
+  }
+]);
+
 function App() {
   return (
-    // <div dir= {lang === "EN"? "ltr" : "rtl"} >
-      <CartContextProvider>
+    <CartContextProvider>
       <WishlistContextProvider>
-      <UserContextProvider> 
-        <RouterProvider router={routes}/>
-        <ToastContainer theme='colored'/>
+        <UserContextProvider>
+          <RouterProvider router={routes} />
+          <ToastContainer theme='colored' />
         </UserContextProvider>
       </WishlistContextProvider>
-      </CartContextProvider> 
-      // </div>   
+    </CartContextProvider>
   );
 }
 
