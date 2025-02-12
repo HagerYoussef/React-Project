@@ -111,7 +111,7 @@ export default function Signup() {
           </div>
 
           <div className="col-md-12">
-            <label htmlFor="uConfirm">{registerContent.rePassword} :</label>
+            <label htmlFor="uConfirm">{registerContent.rePassword|| 'Repassword'} : </label>
             <input
               type="password"
               onBlur={formik.handleBlur}

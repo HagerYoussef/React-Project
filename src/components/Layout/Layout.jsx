@@ -5,11 +5,12 @@ import { userContext } from '../../Context/TokenContext'
 
 export default function Layout() {
  let {userToken,setToken}= useContext(userContext);
-  useEffect(()=>{
-    if(localStorage.getItem('userToken')!==null){
-      setToken(localStorage.getItem('userToken'));
-    }
-  },[])
+ useEffect(() => {
+  if (localStorage.getItem('userToken')) {
+    setToken(localStorage.getItem('userToken'));
+  }
+}, []);
+
   return (
     <div>
       <Navbar/>
