@@ -20,7 +20,7 @@ export default function Products() {
   let navigate = useNavigate();
   let [wishListProduct, setWishListProduct] = useState([]);
 
-  const { lang, content } = useSelector((state) => state.languageReducer); // Reading language from the Redux store
+  const { lang, content } = useSelector((state) => state.languageReducer);
   const productContent = lang === 'En' ? content.En.products : content.Ar.products;
 
   async function getCategory() {
@@ -29,9 +29,17 @@ export default function Products() {
   }
 
   async function getProduct() {
-    let { data } = await axios.get('https://ecommerce.routemisr.com/api/v1/products');
-    setProduct(data.data);
-  }
+    try {
+      let { data } = await axios.get('https://ecommerce.routemisr.com/api/v1/products');
+      let apiProducts = data.data;
+  
+      let localProducts = JSON.parse(localStorage.getItem("products")) || [];
+  
+      setProduct([...localProducts, ...apiProducts]);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  }  
 
   useEffect(() => {
     getCategory();
@@ -57,15 +65,22 @@ export default function Products() {
     }
   }
 
-  async function addToMyWishlist(id) {
+  async function toggleWishlist(id) {
     if (!userToken) {
-      navigate('/auth-required'); 
+      navigate('/auth-required');
       return;
     }
-    await addToWishlist(id);
+
+    if (isInWishlist(id)) {
+      await deleteWishlist(id);
+      toast.info("Removed from wishlist");
+    } else {
+      await addToWishlist(id);
+      toast.success("Added to wishlist");
+    }
+
     let { data } = await getMyWishlist();
     setWishListProduct(data?.data);
-    toast.success(data.message);
   }
 
   function isInWishlist(id) {
@@ -76,11 +91,11 @@ export default function Products() {
     let matchesCategory = selectedCategory ? product.category._id.toString() === selectedCategory.toString() : true;
     let matchesSearch = product.title.toLowerCase().includes(searchTerm);
     let matchesPrice = true;
-  
+
     if (selectedPrice === "low") matchesPrice = product.price < 500;
     else if (selectedPrice === "medium") matchesPrice = product.price >= 500 && product.price <= 2000;
     else if (selectedPrice === "high") matchesPrice = product.price > 2000;
-  
+
     return matchesCategory && matchesSearch && matchesPrice;
   });
 
@@ -151,8 +166,9 @@ export default function Products() {
         currentProducts.map(product => (
           <div className="col-md-3" key={product._id}>
             <div className="product p-3 position-relative">
-              <button onClick={() => { addToMyWishlist(product._id) }} className='btn border border-black'>
+              <button onClick={() => toggleWishlist(product._id)} className={`btn border ${isInWishlist(product._id) ? 'border-danger' : 'border-black'}`}>
                 <i className={`fa-solid fa-heart ${isInWishlist(product._id) ? 'text-danger' : 'text-black'}`}></i>
+                {isInWishlist(product._id) ? " Remove" : " Add to Favorite"}
               </button>
               <Link to={`/details/${product._id}`} className='link11'>
                 <img src={product.imageCover} alt={product.title} className='w-100' />
@@ -163,7 +179,7 @@ export default function Products() {
                   <p>{product.ratingsAverage}<i className='fa-solid fa-star rating-color'></i></p>
                 </div>
               </Link>
-              <button onClick={() => { addToMyCart(product._id) }} className='btn w-100 my-4 btn-success text-light mx-auto'>{productContent.addToCart}</button>
+              <button onClick={() => addToMyCart(product._id)} className='btn w-100 my-4 btn-success text-light mx-auto'>{productContent.addToCart}</button>
             </div>
           </div>
         ))
