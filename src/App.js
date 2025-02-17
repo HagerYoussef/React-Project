@@ -43,11 +43,9 @@ const routes = createBrowserRouter([
       { path: 'resetPassword', element: <ResetPassword /> },
       { path: 'admin', element: <AdminDashboard /> },
       { path: 'auth-required', element: <AuthRequired /> },
-
       { path: 'cart', element: <ProtectedRoute><Cart /></ProtectedRoute> },
       { path: 'checkout', element: <ProtectedRoute><Checkout /></ProtectedRoute> },
       { path: 'allorders', element: <ProtectedRoute><Allorders /></ProtectedRoute> },
-
       { path: '*', element: <Notfound /> }
     ]
   }
